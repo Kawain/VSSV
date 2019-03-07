@@ -1,0 +1,58 @@
+﻿<Window x:Class="VSSV.Views.SubWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VSSV.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Consolas"
+        Style="{StaticResource window_common}"
+        Title="{Binding Table}" Height="600" Width="1000">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <DataGrid
+            Grid.Row="0" Grid.ColumnSpan="3"
+            VirtualizingPanel.ScrollUnit="Pixel"
+            ItemsSource="{Binding Columns}"
+            CanUserAddRows="False"
+            AutoGenerateColumns="False">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Cid" Binding="{Binding Cid}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Notnull" Binding="{Binding Notnull}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="DfltValue" Binding="{Binding DfltValue}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Pk" Binding="{Binding Pk}" IsReadOnly="True"/>
+
+                <DataGridTextColumn Header="内容（ダブルクリックで編集モード）" Binding="{Binding Content}">
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="AcceptsReturn" Value="true" />
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="1" Grid.Column="0" Content="削除" Style="{StaticResource MaterialDesignRaisedAccentButton}" IsEnabled="{Binding EditBtn}"/>
+        <Button Grid.Row="1" Grid.Column="1" Content="編集" Style="{StaticResource MaterialDesignRaisedDarkButton}" IsEnabled="{Binding EditBtn}"/>
+        <Button Grid.Row="1" Grid.Column="2" Content="新規追加" Style="{StaticResource MaterialDesignRaisedLightButton}" IsEnabled="{Binding NewBtn}"/>
+
+    </Grid>
+</Window>
