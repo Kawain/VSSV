@@ -175,17 +175,17 @@ namespace VSSV.Views
         //SQL作成ウィンド
         private void MenuItem_Click_SQL(object sender, RoutedEventArgs e)
         {
-            //if (_vm.SelectedPath == "")
-            //{
-            //    MessageBox.Show("SQLiteファイルが選択されていません");
-            //    return;
-            //}
+            if (_vm.SelectedPath == "")
+            {
+                MessageBox.Show("SQLiteファイルが選択されていません");
+                return;
+            }
 
             SQLWindow win = new SQLWindow(_vm);
             Visibility = Visibility.Collapsed;
             if (win.ShowDialog() == true)
             {
-                Console.WriteLine("true");
+                SelectedPathChange();
             }
             Visibility = Visibility.Visible;
         }

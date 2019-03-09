@@ -8,6 +8,7 @@
         WindowStartupLocation="CenterScreen"
         FontFamily="Consolas"
         Style="{StaticResource window_common}"
+        Closing="Window_Closing"
         Title="SQL Window" Height="600" Width="1000">
 
     <Window.Resources>
@@ -23,18 +24,18 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <!--<DataGrid Grid.Row="0"/>-->
+        <!--https://stackoverflow.com/questions/45902727/using-a-iconverter-to-deal-with-newitemplaceholder-in-wpf-xaml-mvvm-->
 
         <DataGrid
             Grid.Row="0" 
             ItemsSource="{Binding Histories}"
-            SelectedItem="{Binding CurrentRowItem}"
+            SelectedItem="{Binding CurrentRowItem,TargetNullValue={x:Static CollectionView.NewItemPlaceholder}}"
             CanUserAddRows="True"
             AutoGenerateColumns="False">
 
             <DataGrid.Columns>
                 <DataGridTextColumn
-                    Header="SQL作成(クリックで編集、Tabまたは…で追加、Deleteキーで削除)"
+                    Header="SQL作成(クリックで編集、Tabで追加、Deleteキーで削除)"
                     Binding="{Binding SQL,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                     <DataGridTextColumn.EditingElementStyle>
                         <Style TargetType="TextBox">
@@ -59,7 +60,12 @@
             HorizontalAlignment="Stretch"
             Height="10"/>
 
-        <DataGrid Grid.Row="2"/>
+        <DataGrid 
+            Name="SelectDataGrid"
+            Grid.Row="2"
+            ItemsSource="{Binding}"
+            DataContext="{Binding}"
+            IsReadOnly="True"/>
 
     </Grid>
 </Window>

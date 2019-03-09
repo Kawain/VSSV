@@ -239,7 +239,6 @@ namespace VSSV.Models
             using (var conn = new SQLiteConnection("Data Source=" + path))
             {
                 var affectedRows = conn.Execute(sql.ToString(), anonymous);
-                Console.WriteLine(affectedRows);
             }
         }
 
@@ -277,11 +276,16 @@ namespace VSSV.Models
             using (var conn = new SQLiteConnection("Data Source=" + path))
             {
                 var affectedRows = conn.Execute(sql.ToString(), anonymous);
-                Console.WriteLine(affectedRows);
             }
 
         }
 
+        /// <summary>
+        /// 削除
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="table"></param>
+        /// <param name="rowid"></param>
         public static void DeleteRecord(string path, string table, int rowid)
         {
             //sql作成
@@ -290,8 +294,54 @@ namespace VSSV.Models
             using (var conn = new SQLiteConnection("Data Source=" + path))
             {
                 var affectedRows = conn.Execute(sql.ToString());
-                Console.WriteLine(affectedRows);
             }
         }
+
+
+        /// <summary>
+        /// SQLウインドウからのExecute（SELECT以外）
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="sql"></param>
+        public static void SQLExecute(string path, string sql)
+        {
+            try
+            {
+                using (var conn = new SQLiteConnection("Data Source=" + path))
+                {
+                    var affectedRows = conn.Execute(sql);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// SQLウインドウからのQuery（SELECT）
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public static List<object> SQLQuery(string path, string sql)
+        {
+            var list = new List<object>();
+
+            try
+            {
+                using (var conn = new SQLiteConnection("Data Source=" + path))
+                {
+                    list = conn.Query<dynamic>(sql).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return list;
+        }
+
     }
 }
