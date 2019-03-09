@@ -150,7 +150,7 @@ namespace VSSV.Models
                 {
                     try
                     {
-                        if (v.Pk > 0 && mode == "insert")
+                        if (v.Pk > 0 && v.Content == "" && mode == "insert")
                         {
                             dic.Add(v.Name, null);
                         }
@@ -280,6 +280,18 @@ namespace VSSV.Models
                 Console.WriteLine(affectedRows);
             }
 
+        }
+
+        public static void DeleteRecord(string path, string table, int rowid)
+        {
+            //sql作成
+            string sql = $"DELETE FROM {table} WHERE _ROWID_ = {rowid};";
+
+            using (var conn = new SQLiteConnection("Data Source=" + path))
+            {
+                var affectedRows = conn.Execute(sql.ToString());
+                Console.WriteLine(affectedRows);
+            }
         }
     }
 }

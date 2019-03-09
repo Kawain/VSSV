@@ -35,7 +35,20 @@ namespace VSSV.Views
         //削除
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBoxResult messageBoxResult = MessageBox.Show("本当に削除しますか？", "Delete Confirmation", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    DBOperation.DeleteRecord(_vm.SelectedPath, _vm.Table, _vm.RowID);
+                    _vm.DialogResultFlag = true;
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
 
         //編集
