@@ -48,6 +48,8 @@ namespace VSSV.ViewModels
             }
         }
 
+        //SQLウィンドで使用
+        public ObservableCollection<History> Histories { get; set; } = new ObservableCollection<History>();
 
 
         public MainWindowViewModel()

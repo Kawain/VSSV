@@ -1,0 +1,65 @@
+﻿<Window x:Class="VSSV.Views.SQLWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VSSV.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Consolas"
+        Style="{StaticResource window_common}"
+        Title="SQL Window" Height="600" Width="1000">
+
+    <Window.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <!--<DataGrid Grid.Row="0"/>-->
+
+        <DataGrid
+            Grid.Row="0" 
+            ItemsSource="{Binding Histories}"
+            SelectedItem="{Binding CurrentRowItem}"
+            CanUserAddRows="True"
+            AutoGenerateColumns="False">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Header="SQL作成(クリックで編集、Tabまたは…で追加、Deleteキーで削除)"
+                    Binding="{Binding SQL,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="AcceptsReturn" Value="true" />
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTemplateColumn  Header="実行">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="SQL_Button_Click">実行</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <GridSplitter 
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            Height="10"/>
+
+        <DataGrid Grid.Row="2"/>
+
+    </Grid>
+</Window>

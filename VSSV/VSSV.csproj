@@ -67,11 +67,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\DBOperation.cs" />
+    <Compile Include="Models\History.cs" />
     <Compile Include="Models\SqliteMasterModel.cs" />
     <Compile Include="Models\TabModel.cs" />
     <Compile Include="Models\TypeClassification.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\SQLWindowViewModel.cs" />
     <Compile Include="ViewModels\SubWindowViewModel.cs" />
+    <Compile Include="Views\SQLWindow.xaml.cs">
+      <DependentUpon>SQLWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SubWindow.xaml.cs">
       <DependentUpon>SubWindow.xaml</DependentUpon>
     </Compile>
@@ -87,6 +92,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\SQLWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SubWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

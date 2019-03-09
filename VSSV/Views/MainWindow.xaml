@@ -34,6 +34,7 @@
                 <MenuItem Header="終了" Click="MenuItem_Click_End"/>
             </MenuItem>
             <MenuItem Header="編集(_E)">
+                <MenuItem Header="SQL" Click="MenuItem_Click_SQL"/>
                 <MenuItem Header="sqlite3.exe" Click="MenuItem_Click_Sqlite3"/>
             </MenuItem>
         </Menu>

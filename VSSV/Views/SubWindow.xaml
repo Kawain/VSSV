@@ -11,6 +11,12 @@
         Closing="Window_Closing"
         Title="{Binding Table}" Height="600" Width="1000">
 
+    <Window.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

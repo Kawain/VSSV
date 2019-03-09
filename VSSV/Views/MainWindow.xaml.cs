@@ -99,6 +99,7 @@ namespace VSSV.Views
             // /kは実行後にもコマンドプロンプトが残る　/cは実行後に消える
             info.Arguments = $@"/c ..\..\..\sqlite3.exe {_vm.SelectedPath}";
             Process p = Process.Start(info);
+
             //終了まで待機
             p.WaitForExit();
             //終了したら再読込
@@ -142,11 +143,6 @@ namespace VSSV.Views
             //https://plaza.rakuten.co.jp/pirorin55/diary/201602290001/
             //MessageBox.Show(dataGrid.Columns[0].Header.ToString() + ": " +((TextBlock)dataGrid.Columns[0].GetCellContent(dataGrid.SelectedItem)).Text);
 
-            //ファイル
-            string path = _vm.SelectedPath;
-            //テーブル名
-            string table = _vm.TabItems[_vm.TabIndex].Header;
-
             if (dataGrid.SelectedItem == null)
             {
                 return;
@@ -154,26 +150,44 @@ namespace VSSV.Views
             //rowid
             int rowid = Convert.ToInt32(((TextBlock)dataGrid.Columns[0].GetCellContent(dataGrid.SelectedItem)).Text);
 
-            SubWindow win = new SubWindow(path, table, rowid);
+            SubWindow win = new SubWindow(_vm.SelectedPath, _vm.TabItems[_vm.TabIndex].Header, rowid);
+            Visibility = Visibility.Collapsed;
             if (win.ShowDialog() == true)
             {
                 _vm.MakeTabs(_vm.TabIndex);
             }
+            Visibility = Visibility.Visible;
         }
 
         //新規追加ウインドウ
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //ファイル
-            string path = _vm.SelectedPath;
-            //テーブル名
-            string table = _vm.TabItems[_vm.TabIndex].Header;
+            SubWindow win = new SubWindow(_vm.SelectedPath, _vm.TabItems[_vm.TabIndex].Header);
+            Visibility = Visibility.Collapsed;
 
-            SubWindow win = new SubWindow(path, table);
             if (win.ShowDialog() == true)
             {
                 _vm.MakeTabs(_vm.TabIndex);
             }
+            Visibility = Visibility.Visible;
+        }
+
+        //SQL作成ウィンド
+        private void MenuItem_Click_SQL(object sender, RoutedEventArgs e)
+        {
+            //if (_vm.SelectedPath == "")
+            //{
+            //    MessageBox.Show("SQLiteファイルが選択されていません");
+            //    return;
+            //}
+
+            SQLWindow win = new SQLWindow(_vm);
+            Visibility = Visibility.Collapsed;
+            if (win.ShowDialog() == true)
+            {
+                Console.WriteLine("true");
+            }
+            Visibility = Visibility.Visible;
         }
     }
 }
