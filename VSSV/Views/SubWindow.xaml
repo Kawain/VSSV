@@ -55,7 +55,6 @@
             Grid.Column="0"
             Content="削除"
             Click="BtnDelete_Click"
-            Style="{StaticResource MaterialDesignRaisedAccentButton}"
             IsEnabled="{Binding EditBtn}"/>
         <Button
             Name="BtnUpdate"
@@ -63,7 +62,6 @@
             Grid.Column="1"
             Content="編集"
             Click="BtnUpdate_Click"
-            Style="{StaticResource MaterialDesignRaisedDarkButton}"
             IsEnabled="{Binding EditBtn}"/>
         <Button
             Name="Insert"
@@ -71,7 +69,6 @@
             Grid.Column="2"
             Content="新規追加"
             Click="Insert_Click"
-            Style="{StaticResource MaterialDesignRaisedLightButton}"
             IsEnabled="{Binding NewBtn}"/>
 
     </Grid>

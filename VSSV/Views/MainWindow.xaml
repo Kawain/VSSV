@@ -81,8 +81,7 @@
                             <Button
                                 Grid.Row="1"
                                 Content="新規入力"
-                                Click="Button_Click"
-                                Style="{StaticResource MaterialDesignRaisedLightButton}"/>
+                                Click="Button_Click"/>
 
                         </Grid>
                     </DataTemplate>
