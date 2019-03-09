@@ -154,11 +154,11 @@ namespace VSSV.Views
             //rowid
             int rowid = Convert.ToInt32(((TextBlock)dataGrid.Columns[0].GetCellContent(dataGrid.SelectedItem)).Text);
 
-            Console.WriteLine(rowid);
-
             SubWindow win = new SubWindow(path, table, rowid);
-            win.ShowDialog();
-
+            if (win.ShowDialog() == true)
+            {
+                _vm.MakeTabs(_vm.TabIndex);
+            }
         }
 
         //新規追加ウインドウ
@@ -170,9 +170,10 @@ namespace VSSV.Views
             string table = _vm.TabItems[_vm.TabIndex].Header;
 
             SubWindow win = new SubWindow(path, table);
-            win.ShowDialog();
-            //閉じたら
-            _vm.MakeTabs(_vm.TabIndex);
+            if (win.ShowDialog() == true)
+            {
+                _vm.MakeTabs(_vm.TabIndex);
+            }
         }
     }
 }

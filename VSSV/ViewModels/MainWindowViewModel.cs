@@ -102,32 +102,11 @@ namespace VSSV.ViewModels
             //List<PRAGMAModel>
             var allColumns = DBOperation.AllColumns(SelectedPath, tableName, true);
 
-            /*
-             * SQLiteの型
-             * NULL       NULL値
-             * INTEGER    符号付整数。1, 2, 3, 4, 6, or 8 バイトで格納
-             * REAL       浮動小数点数。8バイトで格納
-             * TEXT       テキスト。UTF-8, UTF-16BE or UTF-16-LEのいずれかで格納
-             * BLOB       Binary Large OBject。入力データをそのまま格納
-             */
-
             //DataTableのColumns
             foreach (var v in allColumns)
             {
-                //integer変換
-                if (v.Type.ToLower() == "integer")
-                {
-                    table.Columns.Add(v.Name, typeof(int));
-                }
-                //double変換
-                else if (v.Type.ToLower() == "real")
-                {
-                    table.Columns.Add(v.Name, typeof(double));
-                }
-                else
-                {
-                    table.Columns.Add(v.Name);
-                }
+                var t = TypeClassification.Judge(v.Type);
+                table.Columns.Add(v.Name, t);
             }
 
             //テーブル全レコード
@@ -141,28 +120,24 @@ namespace VSSV.ViewModels
                 var n = 0;
                 foreach (var v2 in allColumns)
                 {
-                    if (v2.Type.ToLower() != "integer" && v2.Type.ToLower() != "real")
+                    if (data[v2.Name] != null)
                     {
-                        if (data[v2.Name] != null)
+                        //改行削除
+                        data[v2.Name] = data[v2.Name].ToString().Replace("\r", "").Replace("\n", "");
+                        //長文を短くする
+                        int len = data[v2.Name].ToString().Length;
+                        if (len > 50)
                         {
-                            //改行削除
-                            data[v2.Name] = data[v2.Name].ToString().Replace("\r", "").Replace("\n", "");
-                            //長文を短くする
-                            int len = data[v2.Name].ToString().Length;
-                            if (len > 50)
-                            {
-                                data[v2.Name] = data[v2.Name].ToString().Substring(0, 50) + "…";
-                            }
+                            data[v2.Name] = data[v2.Name].ToString().Substring(0, 50) + "…";
                         }
-                    }
-                    try
-                    {
+
                         row[n] = data[v2.Name];
                     }
-                    catch
+                    else
                     {
                         row[n] = DBNull.Value;
                     }
+
                     n++;
                 }
                 table.Rows.Add(row);

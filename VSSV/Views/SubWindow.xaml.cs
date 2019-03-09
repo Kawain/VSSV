@@ -41,7 +41,15 @@ namespace VSSV.Views
         //編集
         private void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                DBOperation.UpdateRecord(_vm.SelectedPath, _vm.Table, _vm.Columns, _vm.RowID);
+                _vm.DialogResultFlag = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         //新規追加
@@ -50,11 +58,18 @@ namespace VSSV.Views
             try
             {
                 DBOperation.InsertRecord(_vm.SelectedPath, _vm.Table, _vm.Columns);
+                _vm.DialogResultFlag = true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        //ウインドウを閉じる直前
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            DialogResult = _vm.DialogResultFlag;
         }
     }
 }

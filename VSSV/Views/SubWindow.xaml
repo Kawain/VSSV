@@ -8,6 +8,7 @@
         WindowStartupLocation="CenterScreen"
         FontFamily="Consolas"
         Style="{StaticResource window_common}"
+        Closing="Window_Closing"
         Title="{Binding Table}" Height="600" Width="1000">
 
     <Grid>
@@ -39,6 +40,20 @@
                 <DataGridTextColumn Header="Pk" Binding="{Binding Pk}" IsReadOnly="True"/>
 
                 <DataGridTextColumn Header="内容（ダブルクリックで編集モード）" Binding="{Binding Content}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="BorderBrush" Value="White"/>
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                            </Style.Triggers>
+                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
                     <DataGridTextColumn.EditingElementStyle>
                         <Style TargetType="TextBox">
                             <Setter Property="TextWrapping" Value="Wrap" />

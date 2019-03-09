@@ -53,6 +53,15 @@ namespace VSSV.ViewModels
             set { SetProperty(ref _editBtn, value); }
         }
 
+        private bool _dialogResultFlag = false;
+        public bool DialogResultFlag
+        {
+            get { return _dialogResultFlag; }
+            set { SetProperty(ref _dialogResultFlag, value); }
+        }
+
+
+
         public SubWindowViewModel(string path, string table, int rowid)
         {
             SelectedPath = path;

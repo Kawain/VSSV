@@ -69,6 +69,7 @@
     <Compile Include="Models\DBOperation.cs" />
     <Compile Include="Models\SqliteMasterModel.cs" />
     <Compile Include="Models\TabModel.cs" />
+    <Compile Include="Models\TypeClassification.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\SubWindowViewModel.cs" />
     <Compile Include="Views\SubWindow.xaml.cs">

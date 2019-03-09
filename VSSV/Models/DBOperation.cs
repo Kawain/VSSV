@@ -97,7 +97,7 @@ namespace VSSV.Models
         {
             var list = new List<object>();
 
-            //rowid というカラム名は使ってそうなので__ROWID__にしたが、奇跡的にダブれば不具合がでる
+            //rowid というカラム名は使ってそうなので__ROWID__にしたが奇跡的に重複すれば不具合がでる
             string sql = $"SELECT _ROWID_ as __ROWID__, * FROM {table};";
 
             using (var conn = new SQLiteConnection("Data Source=" + path))
@@ -129,42 +129,28 @@ namespace VSSV.Models
             return obj;
         }
 
+
         /// <summary>
-        /// 新規追加
+        /// 匿名型作成
+        /// https://dobon.net/vb/bbs/log3-54/31793.html
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="table"></param>
         /// <param name="models"></param>
-        public static void InsertRecord(string path, string table, List<PRAGMAModel> models)
+        /// <returns></returns>
+        private static object CreateAnonymousType(string mode, List<PRAGMAModel> models)
         {
 
-            //sql作成
-            var sql = new StringBuilder($"INSERT INTO {table} VALUES(");
-
-            //@カラム名を追加
-            foreach (var v in models)
-            {
-                sql.Append("@");
-                sql.Append(v.Name);
-                sql.Append(",");
-            }
-
-            //最後の文字削除
-            sql.Remove(sql.Length - 1, 1);
-            sql.Append(");");
-
-
-            //https://dobon.net/vb/bbs/log3-54/31793.html
             dynamic tmp = new ExpandoObject();
             var dic = new Dictionary<string, object>();
             //内容取得
             foreach (var v in models)
             {
-                if (v.Type.ToLower() == "integer")
+                var t = TypeClassification.Judge(v.Type);
+
+                if (t == typeof(int))
                 {
                     try
                     {
-                        if (v.Pk > 0)
+                        if (v.Pk > 0 && mode == "insert")
                         {
                             dic.Add(v.Name, null);
                         }
@@ -182,7 +168,7 @@ namespace VSSV.Models
                         throw new Exception("int.Parse 失敗：" + v.Name);
                     }
                 }
-                else if (v.Type.ToLower() == "real")
+                else if (t == typeof(double))
                 {
                     try
                     {
@@ -219,13 +205,81 @@ namespace VSSV.Models
                 wk.Add(item.Key, item.Value);
             }
 
+            return (object)tmp;
+
+        }
+        /// <summary>
+        /// 新規追加
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="table"></param>
+        /// <param name="models"></param>
+        public static void InsertRecord(string path, string table, List<PRAGMAModel> models)
+        {
+
+            //sql作成
+            var sql = new StringBuilder($"INSERT INTO {table} VALUES(");
+
+            //@カラム名を追加
+            foreach (var v in models)
+            {
+                sql.Append("@");
+                sql.Append(v.Name);
+                sql.Append(",");
+            }
+
+            //最後の文字削除
+            sql.Remove(sql.Length - 1, 1);
+            sql.Append(");");
+
+            var anonymous = CreateAnonymousType("insert", models);
+
             //https://dapper-tutorial.net/ja/tutorial/1000168/----
 
             using (var conn = new SQLiteConnection("Data Source=" + path))
             {
-                var affectedRows = conn.Execute(sql.ToString(), (object)tmp);
+                var affectedRows = conn.Execute(sql.ToString(), anonymous);
                 Console.WriteLine(affectedRows);
             }
+        }
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="table"></param>
+        /// <param name="models"></param>
+        /// <param name="rowid"></param>
+        public static void UpdateRecord(string path, string table, List<PRAGMAModel> models, int rowid)
+        {
+
+            //sql作成
+            var sql = new StringBuilder($"UPDATE {table} SET ");
+
+            //SET内容追加
+            foreach (var v in models)
+            {
+                sql.Append(v.Name);
+                sql.Append("=");
+                sql.Append("@");
+                sql.Append(v.Name);
+                sql.Append(",");
+            }
+
+            //最後の文字削除
+            sql.Remove(sql.Length - 1, 1);
+            sql.Append($" WHERE _ROWID_ = {rowid};");
+
+            var anonymous = CreateAnonymousType("update", models);
+
+            //https://dapper-tutorial.net/ja/tutorial/1000168/----
+
+            using (var conn = new SQLiteConnection("Data Source=" + path))
+            {
+                var affectedRows = conn.Execute(sql.ToString(), anonymous);
+                Console.WriteLine(affectedRows);
+            }
+
         }
     }
 }

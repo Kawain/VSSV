@@ -27,14 +27,14 @@ namespace TestApp
 
         static void test4()
         {
-            var list = DBOperation.AllColumns(@"C:\Users\user\source\repos\testdb\newnotes2.db", "memos", true);
+            var list = DBOperation.AllColumns(@"C:\Users\user\source\repos\testdb\pk2.db", "test2", true);
 
             Console.WriteLine(list);
         }
 
         static void test5()
         {
-            var list = DBOperation.AllRecords(@"C:\Users\user\source\repos\testdb\newnotes2.db", "categories");
+            var list = DBOperation.AllRecords(@"C:\Users\user\source\repos\testdb\pk2.db", "test2");
 
             Console.WriteLine(list);
 
@@ -79,7 +79,7 @@ namespace TestApp
 
         static void Main(string[] args)
         {
-            test7();
+            test4();
 
             Console.WriteLine("終了");
             Console.Read();
